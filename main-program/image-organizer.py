@@ -10,17 +10,23 @@ class DatabaseHandler(object):
             mongoConnectionString = file.read().strip()
 
         self.cluster = MongoClient(mongoConnectionString)
-        self.db = self.cluster["image-organizer"]
-        self.collection = self.db["images"]
+        self.db = self.cluster['image-organizer']
+        self.collection = self.db['images']
 
-    def add_image(self, image_entry):
-        self.collection.insert_one(image_entry)
+    def add_entry(self, entry):
+        self.collection.insert_one(entry)
 
     def remove_image_by_id(self, id):
         self.collection.remove()
 
 
-if __name__ == "__main__":
+def main():
     db_handler = DatabaseHandler()
-    db_handler.add_image({'file_path': 'C:/Users/Images/donut.jpg',
-                          'tags': ['donut', 'food']})
+    results = db_handler.collection.find({'tags': 'picture'})
+
+    for result in results:
+        print(result['file_path'])
+
+
+if __name__ == '__main__':
+    main()
