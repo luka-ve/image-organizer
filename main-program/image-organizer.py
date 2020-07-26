@@ -1,12 +1,16 @@
 import pymongo
 from pymongo import MongoClient
-# pprint library is used to make the output look more pretty
-from pprint import pprint
+
+import os
 
 
 class DatabaseHandler(object):
     def __init__(self):
-        with open('mongoConnectionString', 'r') as file:
+        dirname = os.path.dirname(__file__)
+        mongoConnectionStringFilename = os.path.join(
+            dirname, 'mongoConnectionString')
+
+        with open(mongoConnectionStringFilename, 'r') as file:
             mongoConnectionString = file.read().strip()
 
         self.cluster = MongoClient(mongoConnectionString)
